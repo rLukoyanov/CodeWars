@@ -1,10 +1,14 @@
 // https://www.codewars.com/kata/5fc7d2d2682ff3000e1a3fbc/train/javascript
 
 function isAValidMessage(message) {
+    if (message == "") {
+        return true;
+    }
+
     const isNumber = (character) => {
         return Boolean(Number(character));
     };
-]
+
     const messageArr = [];
 
     for (let j = 0; j < message.length; j++) {
@@ -12,18 +16,25 @@ function isAValidMessage(message) {
     }
     const nums = [];
 
-    // ? проверить на большое число
+    // TODO: проверить на большое число
 
     for (let i = 0; i < message.length; i++) {
-        if (isNumber(message[i]) && isNumber(message[i + 1])) {
-            nums.push(Number(messageArr[i] + messageArr[i + 1]));
-            messageArr[i] = " ";
-            messageArr[i + 1] = " ";
-        } else {
+        accum = 0;
+        x = true;
+        while (x) {
             if (isNumber(message[i])) {
-                nums.push(Number(messageArr[i]));
-                messageArr[i] = " ";
+                ++accum;
+                i++;
+            } else {
+                x = false;
             }
+        }
+
+        const num = message.slice(i - accum, i);
+
+        if (isNumber(num)) {
+            nums.push(Number(num));
+            messageArr[i - 1] = " ";
         }
     }
 
@@ -37,6 +48,16 @@ function isAValidMessage(message) {
 
     if (nums[nums.length - 1] == 0) {
         nums.splice(nums.length - 1, 1);
+    }
+
+    for (let index = 0; index < words.length; index++) {
+        for (let i = 0; i < words[index].length; i++) {
+            const tmp = words[index].split("");
+            if (isNumber(words[index][i])) {
+                tmp.splice(i, 1);
+                words[index] = tmp.join("");
+            }
+        }
     }
 
     k = 0;
